@@ -68,26 +68,24 @@ $ npm run start:debug
 # Enjoy!
 ```
 
-### Using Sequelize
+### setup .env by rename templeta.env to .env and fill your information
 
 ```bash
-# generate migrations
-$ npx sequelize-cli migration:generate --name XXX-migration-name
+JWT_AT_SECRET=at-secret
+JWT_RT_SECRET=rt-secret
+JWT_SECRET=secret
+JWT_ACCESS_EXPIRESIN="2h"
+JWT_REFRESH_EXPIRESIN="24h"
+SENDGRID_API_KEY=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
 
-# generate seeders
-$ npx sequelize-cli seed:generate --name XXX-seeder-name
+DATABASE_HOST=localhost
+DATABASE_PORT=3306
+DATABASE_USERNAME=admin
+DATABASE_PASSWORD=admin
+DATABASE_NAME=rent_car.db
 
-# run seeders
-$ npx sequelize-cli db:seed:all
-
-# revert seeders
-$ npx sequelize-cli db:seed:undo
-
-# run migrations
-$ npx sequelize-cli db:migrate
-
-# revert migrations
-$ npx sequelize-cli db:migrate:undo
+REDIS_HOST=localhost
+REDIS_PORT=6379
 ```
 
 ## Test
