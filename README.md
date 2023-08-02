@@ -73,7 +73,7 @@ $ npm run start:debug
 ```bash
 JWT_AT_SECRET=at-secret
 JWT_RT_SECRET=rt-secret
-JWT_SECRET=secret
+
 JWT_ACCESS_EXPIRESIN="2h"
 JWT_REFRESH_EXPIRESIN="24h"
 SENDGRID_API_KEY=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
