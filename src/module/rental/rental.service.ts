@@ -219,27 +219,51 @@ export class RentalService {
   async isCarAvailableForRent(
     createRentalDto: CreateRentalDto,
   ): Promise<boolean> {
+    console.log(createRentalDto.rent_date_time);
     const carRented = await this.rentalModel.findOne({
+      include: [
+        User,
+        Coupon,
+        { model: Car, include: [CarStatus, CarSteerings, CarTypes] },
+        RentalStatus,
+      ],
       where: {
         car_id: createRentalDto.car_id,
-        rental_status_id: ERentalStatus.Available,
-        rent_date_time: {
-          [Op.between]: [
-            createRentalDto.rent_date_time,
-            createRentalDto.return_date_time,
-          ],
-        },
-        return_date_time: {
-          [Op.between]: [
-            createRentalDto.rent_date_time,
-            createRentalDto.return_date_time,
-          ],
-        },
+        rental_status_id: ERentalStatus.Created,
+        [Op.or]: [
+          {
+            rent_date_time: {
+              [Op.between]: [
+                createRentalDto.rent_date_time,
+                createRentalDto.return_date_time,
+              ],
+            },
+          },
+          {
+            [Op.and]: [
+              {
+                rent_date_time: {
+                  [Op.lte]: createRentalDto.rent_date_time,
+                },
+              },
+              {
+                return_date_time: {
+                  [Op.gte]: createRentalDto.return_date_time,
+                },
+              },
+            ],
+          },
+          {
+            return_date_time: {
+              [Op.between]: [
+                createRentalDto.rent_date_time,
+                createRentalDto.return_date_time,
+              ],
+            },
+          },
+        ],
       },
     });
-
-    console.log(carRented);
-    console.log(!carRented);
     return !carRented;
   }
 }

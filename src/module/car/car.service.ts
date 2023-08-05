@@ -7,31 +7,42 @@ import { BaseException } from 'src/common/exception/base-exception';
 import { ServerResponseCode } from 'src/utils/enum/server-response.enum';
 import { GetAllCarDto } from './dto/get-all-car.dto';
 import { Paging } from 'src/utils/types/paging.types';
+import { CacheService } from '../cache/cache.service';
 
 @Injectable()
 export class CarService {
   constructor(
     @InjectModel(Car)
     private carModel: typeof Car,
+    private readonly cacheService: CacheService,
   ) {}
 
   async getAllCars(getAllCarDto: GetAllCarDto): Promise<Paging> {
-    const result = await this.carModel.findAndCountAll({
+    const findResult = await this.carModel.findAndCountAll({
       include: [CarTypes, CarSteerings, CarStatus],
       limit: +getAllCarDto.limit,
       offset: +getAllCarDto.offset,
     });
 
-    console.log(result.rows);
+    let result;
+    const cache = await this.cacheService.getCarData('cars');
 
-    return {
-      items: result.rows,
-      pagingation: {
-        total: result.count,
-        limit: +getAllCarDto.limit,
-        offset: +getAllCarDto.offset,
-      },
-    };
+    if (!cache) {
+      result = {
+        items: findResult.rows,
+        pagingation: {
+          total: findResult.count,
+          limit: +getAllCarDto.limit,
+          offset: +getAllCarDto.offset,
+        },
+      };
+
+      await this.cacheService.saveCarData('cars', result);
+    } else {
+      result = cache;
+    }
+
+    return result;
   }
 
   async getCarById(id: number): Promise<Car> {

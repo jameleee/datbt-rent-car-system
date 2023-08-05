@@ -5,7 +5,9 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  MinDate,
 } from 'class-validator';
+import { IsAfterDate } from 'src/utils/date.utils';
 
 export class CreateRentalDto {
   @Type(() => Number)
@@ -34,6 +36,7 @@ export class CreateRentalDto {
   @Type(() => Date)
   @IsDate()
   @IsNotEmpty()
+  @MinDate(new Date())
   readonly rent_date_time: Date;
 
   @IsString()
@@ -43,6 +46,7 @@ export class CreateRentalDto {
   @Type(() => Date)
   @IsDate()
   @IsNotEmpty()
+  @IsAfterDate('rent_date_time')
   readonly return_date_time: Date;
 
   @IsString()

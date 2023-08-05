@@ -20,11 +20,11 @@ export enum ECoupon {
 }
 
 export enum ERentalStatus {
-  Available = 1,
-  Created = 2,
-  Unavailable = 3,
-  Pending = 4,
-  Rented = 5,
+  Created = 1,
+  Pending = 2,
+  Reserved = 3,
+  CheckedOut = 4,
+  Returned = 5,
 }
 
 export enum ECarStatus {

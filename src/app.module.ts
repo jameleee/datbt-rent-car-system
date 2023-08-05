@@ -27,6 +27,7 @@ import {
 } from 'sequelize/models/payment';
 import { QueuesModule } from './module/queues/queues.module';
 import 'dotenv/config';
+import { RedisCacheModule } from './module/cache/cache.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import 'dotenv/config';
         Payment,
       ],
     }),
+    RedisCacheModule,
     CarModule,
     UsersModule,
     AuthModule,

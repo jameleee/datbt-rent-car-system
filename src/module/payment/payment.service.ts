@@ -114,7 +114,7 @@ export class PaymentService {
           await this.rentalsService.update(
             payment.rental_id,
             {
-              rental_status_id: ERentalStatus.Available,
+              rental_status_id: ERentalStatus.CheckedOut,
             },
             t,
           );
