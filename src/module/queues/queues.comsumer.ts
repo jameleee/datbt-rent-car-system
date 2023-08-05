@@ -27,14 +27,12 @@ export class QueuesConsumer {
       to: email,
       templateId: TEMP_REGISTER_ACCOUNT_SUCCESS,
     };
-    await this.sgMail
-      .send(msg)
-      .then(() => {
-        this.logger.log(`Email sent to ${msg.to} successfully`);
-      })
-      .catch((error: any) => {
-        this.logger.error(`Email sent to ${msg.to} failed: ${error.message}`);
-      });
+    try {
+      await this.sgMail.send(msg);
+      this.logger.log(`Email sent to ${msg.to} successfully`);
+    } catch (error) {
+      this.logger.error(`Email sent to ${msg.to} failed: ${error.message}`);
+    }
   }
 
   @Process(EMAIL_CREATE_ORDER_SUCCESS)
